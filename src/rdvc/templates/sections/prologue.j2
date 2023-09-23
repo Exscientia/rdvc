@@ -1,0 +1,50 @@
+#!/bin/bash
+
+#SBATCH --output=".rdvc/logs/slurm-%j.out"
+{% for option, value in sbatch_key_value_options.items() if value -%}
+#SBATCH --{{ option|replace("_", "-") }}={{ value }}
+{% endfor -%}
+{% for option, value in sbatch_flag_options.items() if value -%}
+#SBATCH --{{ option|replace("_", "-") }}
+{% endfor -%}
+{% for option, value in instance_key_value_options.items() -%}
+#SBATCH --{{ option|replace("_", "-") }}={{ value }}
+{% endfor -%}
+{% for option in instance_flag_options -%}
+#SBATCH --{{ option|replace("_", "-") }}
+{% endfor -%}
+
+# Prepares bash for Conda later on
+source "${HOME}/.bashrc"
+
+# Exit on failure http://redsymbol.net/articles/unofficial-bash-strict-mode/
+set -euxo pipefail
+IFS=$'\n\t'
+
+export RDVC_JOB_REPO_NAME="{{job_repo.name}}"
+export RDVC_JOB_REPO_URL="{{job_repo.url}}"
+export RDVC_JOB_REPO_BRANCH="{{job_repo.branch}}"
+export RDVC_JOB_REPO_REV="{{job_repo.rev}}"
+
+export RDVC_DIR="${RDVC_DIR:-${HOME}/.rdvc}"
+
+# Prepare a directory for the current job
+export RDVC_JOB_WORKSPACE_DIR="/tmp/rdvc-${SLURM_JOB_ID}"
+mkdir -p "${RDVC_JOB_WORKSPACE_DIR}"
+
+# Ensure cleanup after job finishes, regardless of exit status
+function cleanup_job_dir(){
+  echo "Cleaning up the job directory."
+  rm -rf "${RDVC_JOB_WORKSPACE_DIR}"
+}
+
+trap cleanup_job_dir EXIT
+
+# Create an insulated Git workspace for the current job
+echo "Creating Git workspace."
+export RDVC_JOB_REPO_DIR="${RDVC_JOB_WORKSPACE_DIR}/${RDVC_JOB_REPO_NAME}"
+git clone --branch "${RDVC_JOB_REPO_BRANCH}" "${RDVC_JOB_REPO_URL}" "${RDVC_JOB_REPO_DIR}"
+cd "${RDVC_JOB_REPO_DIR}" || exit
+
+# Ensure the job runs on the same revision as was submitted (even if the branch has moved on in the meantime)
+git checkout "${RDVC_JOB_REPO_REV}"

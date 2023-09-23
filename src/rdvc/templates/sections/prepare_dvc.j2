@@ -1,0 +1,25 @@
+# Install Python environment
+echo "Install Python environment."
+./init_python_venv.sh
+
+echo "Activate Python environment."
+source ./.venv/bin/activate
+
+# Setup links for the DVC cache shared among jobs and projects
+dvc config --local cache.type hardlink,symlink,copy
+
+# Push results of experiments even if job fails
+function cleanup_dvc(){
+    if [ "$1" != "0" ]; then
+        # Push cache of all runs, including failed
+        echo "Job failed. Pushing run cache."
+        dvc push --run-cache
+    else
+        echo "Job successfully finished."
+    fi
+
+    deactivate
+    cleanup_job_dir
+}
+
+trap 'cleanup_dvc $?' EXIT

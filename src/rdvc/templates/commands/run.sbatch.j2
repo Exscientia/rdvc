@@ -1,0 +1,13 @@
+{% include "sections/prologue.j2" %}
+
+{% include "sections/prepare_dvc.j2" %}
+
+export RDVC_JOB_EXP_RUN_OPTIONS_STRING="{{dvc_exp_run_options|join(" ")}}"
+echo "Executing DVC experiment."
+{% if dvc_exp_run_pull -%}
+eval "dvc exp run --pull --allow-missing ${RDVC_JOB_EXP_RUN_OPTIONS_STRING}"
+{% else -%}
+eval "dvc exp run ${RDVC_JOB_EXP_RUN_OPTIONS_STRING}"
+{% endif -%}
+
+{% include "sections/push_dvc.j2" %}
