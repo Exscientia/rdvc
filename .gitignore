@@ -21,21 +21,6 @@ dist/
 # various python tools configured to cache under here:
 /.cache
 
-# requirements.txt
-condaenv.*.requirements.txt
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# Local Pycharm project configuration settings
-.idea/*
-!.idea/modules.xml
-!.idea/vcs.xml
-!.idea/rdvc-demo-project.iml
-
-# VSCode
-.vscode/
-
 # Test reports
 test-reports/
 
@@ -43,6 +28,3 @@ test-reports/
 .coverage
 coverage-reports/
 coverage.svg
-
-# temp copy used for verifying if pinned-versions is synced to setup.cfg.
-/pinned-versions.check
