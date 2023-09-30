@@ -33,11 +33,11 @@ class InstanceType:
 
 class InstanceTypes(Enum):
     # general
-    T3_XLARGE = InstanceType(name="t3.xlarge", partition="general", gpus=0, cpus=2, disk_instance=False)
+    T3_XLARGE = InstanceType(name="t3.xlarge", partition="general", gpus=0, cpus=2)
     # single-gpu
-    G5_XLARGE = InstanceType(name="g5.xlarge", partition="single-gpu", gpus=1, cpus=2, disk_instance=True)
+    G5_XLARGE = InstanceType(name="g5.xlarge", partition="single-gpu", gpus=1, cpus=2)
     # multi-gpu
-    G5_12XLARGE = InstanceType(name="g5.12xlarge", partition="multi-gpu", gpus=4, cpus=24, disk_instance=True)
+    G5_12XLARGE = InstanceType(name="g5.12xlarge", partition="multi-gpu", gpus=4, cpus=24)
 
     @classmethod
     def to_dict(cls) -> Dict[str, InstanceType]:
