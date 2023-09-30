@@ -108,5 +108,4 @@ def get_cli_defaults() -> Dict[str, Any]:
     return {
         "init": {**cluster_configs, **merge_configs("init")},
         "run": {**cluster_configs, **merge_configs("run")},
-        "queue": {"start": {**cluster_configs, **merge_configs("run")}},
     }

@@ -1,8 +1,8 @@
 import click
+
 from rdvc._version import version
 from rdvc.cli_options import get_cli_defaults
 from rdvc.commands.init import init
-from rdvc.commands.queue import queue
 from rdvc.commands.run import run
 
 
@@ -14,4 +14,3 @@ def cli() -> None:
 
 cli.add_command(init)
 cli.add_command(run)
-cli.add_command(queue)

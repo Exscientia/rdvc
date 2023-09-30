@@ -8,8 +8,8 @@ import click
 from click_option_group import optgroup
 from dir import get_git_root
 from dulwich.repo import Repo
+
 from rdvc import cli_options
-from rdvc.queue import CommandQueue
 from rdvc.repo import check_local_repo_consistent_with_remote, get_job_repo
 from rdvc.slurm.instance import InstanceTypes
 from rdvc.slurm.remote_checks import check_rdvc_init
@@ -31,13 +31,6 @@ log = logging.getLogger("rdvc")
     default=True,
     help="pull dependencies and attempt to pull outputs of previously run stages from DVC remote",
 )
-@optgroup.option(
-    "--queue",
-    show_default=True,
-    default=False,
-    is_flag=True,
-    help="put experiment into a queue",
-)
 @click.option("-v", "--verbose", is_flag=True, help="verbose mode")
 @click.argument(
     "args",
@@ -49,7 +42,6 @@ log = logging.getLogger("rdvc")
 def run(
     ctx: click.Context,
     pull: bool,
-    queue: bool,
     args: Tuple[str, ...],
     verbose: bool,
     **kwargs: Any,
@@ -66,10 +58,6 @@ def run(
         logging.basicConfig(level=logging.INFO)
 
     repo = Repo(str(get_git_root()))
-
-    if queue:
-        CommandQueue(get_git_root()).put(args)
-        return
 
     # Check repo consistency once all earlier issues have been ruled out.
     check_local_repo_consistent_with_remote(repo)
