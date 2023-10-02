@@ -6,10 +6,10 @@ from typing import Any, Tuple
 
 import click
 from click_option_group import optgroup
-from dir import get_git_root
 from dulwich.repo import Repo
 
 from rdvc import cli_options
+from rdvc.dir import get_git_root
 from rdvc.repo import check_local_repo_consistent_with_remote, get_job_repo
 from rdvc.slurm.instance import InstanceTypes
 from rdvc.slurm.remote_checks import check_rdvc_init

@@ -19,7 +19,7 @@ def make_global_rdvc_config(global_rdvc_config_path: Path) -> None:
     global_rdvc_config_path.parent.mkdir(parents=True, exist_ok=True)
 
     host = click.prompt("Enter SLURM host address")
-    email = click.prompt("(Optional) Enter an e-mail address for SLURM notifications")
+    email = click.prompt("(Optional) Enter an e-mail address for SLURM notifications", default="")
 
     mail_config = {"mail-user": email, "mail-type": "END,FAIL"} if len(email) > 0 else {}
     basic_config = {"cluster": {"host": host}, "run": mail_config}
