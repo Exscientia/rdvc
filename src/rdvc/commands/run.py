@@ -77,6 +77,7 @@ def run(
         instance_key_value_options=instance.to_key_value_options(),
         instance_flag_options=instance.to_flag_options(),
         dvc_exp_run_pull=pull,
+        dvc_exp_run_options=args
     )
 
     host = cluster_key_value_options["host"]
