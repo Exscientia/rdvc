@@ -14,7 +14,7 @@
 #SBATCH --{{ option|replace("_", "-") }}
 {% endfor -%}
 
-# Prepares bash for Conda later on
+# Ensure bashrc is loaded
 source "${HOME}/.bashrc"
 
 # Exit on failure http://redsymbol.net/articles/unofficial-bash-strict-mode/
