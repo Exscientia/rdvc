@@ -23,7 +23,7 @@ class OptionGroup:
 
 CLUSTER_OPTIONS: Dict[str, Dict[str, Any]] = {
     "host": {"required": True, "show_default": True, "help": "SLURM cluster address"},
-    "username": {"required": False, "show_default": True, "help": "SLURM cluster username"},
+    "username": {"required": True, "show_default": True, "help": "SLURM cluster username"},
 }
 
 INSTANCE_OPTIONS: Dict[str, Dict[str, Any]] = {
