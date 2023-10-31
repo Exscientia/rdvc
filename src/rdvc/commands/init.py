@@ -88,7 +88,7 @@ def remote(
 
     init_options = cli_options.get_cli_defaults()["init"]
     host = init_options["host"]
-    username = init_options.get("username", None)
+    username = init_options["username"]
 
     with SSHClient(host, username=username) as client:
         log.info("Generating remote directories if missing.")
