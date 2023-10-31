@@ -107,5 +107,6 @@ class SSHClient:
         return self._exec_command(f"mv {old_path} {new_path}")
 
     def submit_sbatch(self, sbatch_file_path: str) -> str:
-        _, job_id, _ = self._exec_command("sbatch --parsable " + sbatch_file_path, print_stdout=False)
+        sbatch_cmd = "/opt/slurm/bin/sbatch"
+        _, job_id, _ = self._exec_command(f"{sbatch_cmd} --parsable {sbatch_file_path}", print_stdout=False)
         return job_id
